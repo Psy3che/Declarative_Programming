@@ -46,11 +46,14 @@ let rec iter l = match l with
 let v8 = iter [1;2;3];;
 
 (* 清理相邻重复元素函数 cleanse *)
-let rec cleanse l = match l with
-  | [] -> []
-  | h::t ->
-      let i = List.hd t and j = List.tl t in
-      if h = i then h::(cleanse j)
-      else h :: cleanse t;;
+let cleanse l =
+  let rec aux p l = match l with
+    | [] -> []
+    | h::t ->
+      if p = h then aux p t
+      else let u = List.hd t in
+           p :: (aux u t)
+  in let i = List.hd l in
+     aux i l;;
 
-let v9 = cleanse [1;1;2;2;3;3];;
+let v9 = cleanse [1;1;2;2;2;2;3;5;5;5;5;7;7];;
